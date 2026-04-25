@@ -49,12 +49,14 @@ jobs:
       - name: Install Python requirements
         run:
           pip install -r tests/requirements.txt
-
+          
       - name: Download HAOS image
         if: ${{ !inputs.use-artifact }}
+        env:
+          VERSION: ${{ github.event.inputs.version }}
         run: |
-          curl -sfL -o haos.qcow2.xz  https://os-artifacts.home-assistant.io/${{github.event.inputs.version}}/haos_ova-${{github.event.inputs.version}}.qcow2.xz
-
+          curl -sfL -o haos.qcow2.xz "https://os-artifacts.home-assistant.io/${VERSION}/haos_ova-${VERSION}.qcow2.xz"
+          
       - name: Get OS image artifact
         if: ${{ inputs.use-artifact }}
         uses: actions/download-artifact@v4
